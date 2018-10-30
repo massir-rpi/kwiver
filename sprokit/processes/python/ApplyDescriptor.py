@@ -30,6 +30,7 @@ from __future__ import print_function
 from sprokit.pipeline import process
 from kwiver.kwiver_process import KwiverProcess
 from vital.util.VitalPIL import from_pil, get_pil_image
+import sys
 
 apply_descriptor_test_mode = False
 try:
@@ -44,7 +45,7 @@ try:
 except:
     # By doing this we allow folks to test that their KWIVER environment is properly built, before
     # building and configuring SMQTK
-    print("SMQTK not configured into this Python instance.  Entering ApplyDescriptor test mode")
+    print("SMQTK not configured into this Python instance.  Entering ApplyDescriptor test mode", file=sys.stderr)
     apply_descriptor_test_mode = True
 
 
