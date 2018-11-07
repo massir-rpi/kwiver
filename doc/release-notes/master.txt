@@ -43,25 +43,11 @@ Vital
  * Changes to track_set_impl to facilitate passing track changes between
    Sprokit processes rather than full track sets for efficiency.
 
-vital util
-
- * Added simple statistic class for accumulating values. Computes
-   average and std-deviation
-
 Vital Tools
 
- * Converted tools to use applet plugin approach.
-
- * Converted stand-alone tools to reside under the main "kwiver" top
+ * Converting stand-alone tools to reside under the main "kwiver" top
    level tool. Individual tools are specified as a parameter to the
    "kwiver" tool runner.
-
-Vital Types
-
- * Added crop method to vital::image to get a cropped view of the image.
-
- * Added version of the get_image method to vital::image_container to get
-   a cropped view of the underlying image.
 
 Vital Bindings
 
@@ -205,8 +191,6 @@ Sprokit: Processes
 
  * Improved process timing instrumentation to provide simple stats for
    step entry.
-
-Tools
 
 Unit Tests
 
