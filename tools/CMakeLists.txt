@@ -30,7 +30,7 @@ kwiver_make_module_path( ${KWIVER_BINARY_DIR} ${kwiver_plugin_applets} )
 kwiver_add_module_path( ${kwiver_module_path_result} )
 
 ###
-#
+# tools applet support library
 kwiver_add_library( kwiver_tools_applet
                kwiver_applet.h
                kwiver_applet.cxx
@@ -40,7 +40,6 @@ target_link_libraries( kwiver_tools_applet
               vital_util
               ${BOOST_REGEX}
   )
-
 
 ###
 # built the tool runner
@@ -58,7 +57,7 @@ target_link_libraries( kwiver
 
 ###
 # Add applet for tools plugin
-kwiver_add_plugin( kwiver_tools
+kwiver_add_plugin( kwiver_applets
   SUBDIR       ${kwiver_plugin_applets}
   SOURCES      ${sources} ${headers}
   PRIVATE      vital
