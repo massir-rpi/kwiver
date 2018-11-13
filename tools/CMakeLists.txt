@@ -77,7 +77,7 @@ kwiver_install_headers(
   )
 
 kwiver_install_headers(
-  ${CMAKE_CURRENT_BINARY_DIR}/kwiver_tools_applet_export.h
+  ${CMAKE_CURRENT_BINARY_DIR}/kwiver_tools_applets_export.h
   NOPATH
   SUBDIR      tools
   )

@@ -35,6 +35,8 @@
 
 #include <tools/cxxopts.hpp>
 
+#include <tools/cxxopts.hpp>
+
 #include <ostream>
 #include <memory>
 #include <vector>
