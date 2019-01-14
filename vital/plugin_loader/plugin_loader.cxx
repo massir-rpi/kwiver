@@ -71,11 +71,17 @@ public:
   { }
 
   ~plugin_loader_impl()
-  { }
+  {
+    //+ This really should be done when the application terminates.
+    //+ There could still be threads active that need the loaded modules.
+
+    //+ unload_libraries();
+  }
 
   void load_known_modules();
   void look_in_directory( std::string const& directory);
   void load_from_module( std::string const& path);
+  void unload_libraries();
 
   void print( std::ostream& str ) const;
 
@@ -281,6 +287,15 @@ plugin_loader
 }
 
 
+// ----------------------------------------------------------------------------
+void
+plugin_loader
+::unload_libraries()
+{
+  m_impl->unload_libraries();
+}
+
+
 // ==================================================================
 /**
  * @brief Load all known modules.
@@ -414,6 +429,19 @@ plugin_loader_impl
   reg_fp_t reg_fp = reinterpret_cast< reg_fp_t > ( fp );
 
   ( *reg_fp )( m_parent ); // register plugins
+}
+
+
+// ----------------------------------------------------------------------------
+void
+plugin_loader_impl::
+unload_libraries()
+{
+  // Close all library handles
+  for ( auto hdl : m_library_map )
+  {
+    DL::CloseLibrary( hdl.second );
+  }
 }
 
 

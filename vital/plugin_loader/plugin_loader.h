@@ -237,6 +237,16 @@ public:
    */
   plugin_module_map_t const& get_module_map() const;
 
+  /**
+   * @brief Unload all loaded libraries.
+   *
+   * All libraries that have been loaded by this loader are closed and
+   * unloaded. Beware that the memory belonging to these shared
+   * libraries is unmapped and is no longer valid. Any threads that
+   * are using these libraries will segfault.
+   *
+   */
+  void unload_libraries();
 
 protected:
   friend class plugin_loader_impl;
