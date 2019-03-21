@@ -86,7 +86,6 @@ add_command_options()
     ;
 
   m_cmd_options->parse_positional({"config-file", "extra"});
-
 }
 
 // ============================================================================
@@ -123,8 +122,6 @@ run()
   {
     opt_path = cmd_args["path"].as<std::vector<std::string>>();
   }
-
-  std::string opt_config_file;
 
   if ( cmd_args.count("application") )
   {
@@ -163,6 +160,8 @@ run()
 
     return EXIT_SUCCESS;
   }
+
+  std::string opt_config_file;
 
   if ( cmd_args.count("config-file") )
   {

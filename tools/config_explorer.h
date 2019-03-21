@@ -45,15 +45,12 @@ class config_explorer
 public:
   config_explorer();
 
-  static constexpr char const* name = "explore-config";
-  static constexpr char const* description =
-    "Explore configuration loading process.\n\n"
-    "This program assists in debugging config loading problems. It loads a "
-    "configuration and displays the contents or displays the search path.";
-
+  PLUGIN_INFO( "explore-config",
+               "Explore configuration loading process.\n\n"
+               "This program assists in debugging config loading problems. It loads a "
+               "configuration and displays the contents or displays the search path.");
 
   virtual int run() override;
-
   virtual void add_command_options() override;
 
 }; // end of class

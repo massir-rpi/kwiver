@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2018 by Kitware, Inc.
+ * Copyright 2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,11 +45,10 @@ class pipe_config
 public:
   pipe_config();
 
-  virtual int run( const std::vector<std::string>& argv );
-  virtual void usage( std::ostream& outstream ) const;
+  virtual int run() override;
+  virtual void add_command_options() override;
 
-  static constexpr char const* name = "pipe_config";
-  static constexpr char const* description =
+  PLUGIN_INFO( "pipe_config",
     "Configures a pipeline\n\n"
     "This tool reads a pipeline configuration file, applies the program options "
     "and generates a \"compiled\" config file. "
@@ -73,7 +72,7 @@ public:
     "included configuration files. "
     "\n\n"
     "The --pipeline option specifies the file that contains the main pipeline specification"
-    ;
+    );
 
 }; // end of class
 

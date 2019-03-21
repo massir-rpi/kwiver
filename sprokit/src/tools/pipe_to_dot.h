@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2018 by Kitware, Inc.
+ * Copyright 2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef KWIVER_TOOL_PIPE_CONFIG_H
+#ifndef KWIVER_TOOL_PIPE_TO_DOT_H
 #define KWIVER_TOOL_PIPE_TO_DOT_H
 
 #include <tools/kwiver_applet.h>
@@ -45,13 +45,11 @@ class pipe_to_dot
 public:
   pipe_to_dot();
 
-  virtual int run( const std::vector<std::string>& argv );
-  virtual void usage( std::ostream& outstream ) const;
+  virtual int run() override;
+  virtual void add_command_options() override;
 
-  static constexpr char const* name = "pipe_to_dot";
-  static constexpr char const* description =
-    "Create DOT output of pipe topology"
-    ;
+  PLUGIN_INFO( "pipe-to-dot",
+               "Create DOT output of pipe topology")
 
 }; // end of class
 
