@@ -29,8 +29,8 @@
  */
 
 
-#include "kwiver_applet.h"
-#include "applet_context.h"
+#include <vital/applets/kwiver_applet.h>
+#include <vital/applets/applet_context.h>
 
 #include <vital/plugin_loader/plugin_manager.h>
 #include <vital/plugin_loader/plugin_factory.h>
@@ -61,7 +61,7 @@ public:
 
     // Parse the command line
     // Command line format:
-    // arg0 [runner-flags] <applet> [applet-flags]
+    // arg0 [runner-flags] <applet> [applet-args]
 
     // The first applet args is the program name.
     m_applet_args.push_back( "kwiver" );
@@ -210,6 +210,7 @@ int main(int argc, char *argv[])
     kwiver::tools::kwiver_applet_sptr applet( app_fact.create( options.m_applet_name ) );
 
     tool_context->m_applet_name = options.m_applet_name;
+    tool_context->m_argv = options.m_applet_args;
 
     // Pass the context to the applet. This is done as a separate call
     // because the default factory for applets does not take any
@@ -238,7 +239,7 @@ int main(int argc, char *argv[])
     tool_context->m_result = &local_result; // in this case the address of a stack variable is o.k.
 
     // Run the specified tool
-    return applet->run(  );
+    return applet->run();
   }
   catch ( cxxopts::OptionException& e)
   {

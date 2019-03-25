@@ -31,7 +31,7 @@
 #include "sprokit_applets_export.h"
 
 #include <vital/plugin_loader/plugin_loader.h>
-#include <tools/applet_registrar.h>
+#include <vital/applets/applet_registrar.h>
 
 #include "pipeline_runner.h"
 #include "pipe_to_dot.h"
@@ -43,7 +43,7 @@ SPROKIT_APPLETS_EXPORT
 void
 register_factories( kwiver::vital::plugin_loader& vpm )
 {
-  using namespace kwiver::tools;
+  using namespace sprokit::tools;
 
   kwiver::applet_registrar reg( vpm, "sprokit_tool_group" );
 

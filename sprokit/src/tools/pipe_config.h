@@ -31,7 +31,7 @@
 #ifndef KWIVER_TOOL_PIPE_CONFIG_H
 #define KWIVER_TOOL_PIPE_CONFIG_H
 
-#include <tools/kwiver_applet.h>
+#include <vital/applets/kwiver_applet.h>
 
 #include <string>
 #include <vector>
@@ -48,7 +48,7 @@ public:
   virtual int run() override;
   virtual void add_command_options() override;
 
-  PLUGIN_INFO( "pipe_config",
+  PLUGIN_INFO( "pipe-config",
     "Configures a pipeline\n\n"
     "This tool reads a pipeline configuration file, applies the program options "
     "and generates a \"compiled\" config file. "

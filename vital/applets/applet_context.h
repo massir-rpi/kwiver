@@ -28,33 +28,47 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef KWIVER_TOOL_DUMP_KLV_H
-#define KWIVER_TOOL_DUMP_KLV_H
+#ifndef KWIVER_TOOLS_APP_CONTEXT_H
+#define KWIVER_TOOLS_APP_CONTEXT_H
 
-#include "kwiver_applet.h"
+#include <vital/util/wrap_text_block.h>
 
-#include <string>
-#include <vector>
+#include <vital/applets/cxxopts.hpp>
+
+#include <memory>
+#include <ostream>
 
 namespace kwiver {
 namespace tools {
 
-class dump_klv
-  : public kwiver_applet
+// ----------------------------------------------------------------
+/**
+ * @brief Applet context provided by the tool runner.
+ *
+ * This class contains data that are shared between the tool runner
+ * and the applet.
+ */
+class applet_context
 {
 public:
-  dump_klv();
+  // Used to wrap large text blocks
+  kwiver::vital::wrap_text_block m_wtb;
 
-  PLUGIN_INFO("dump-klv",
-              "Dump KLV stream from video.\n\n"
-              "This program displays the KLV metadata packets that are embedded in "
-              "a video stream.");
+  // name of the applet. as in kwiver <applet> <args..>
+  std::string m_applet_name;
 
-  virtual int run() override;
-  virtual void add_command_options() override;
+    /**
+   * Results from parsing the command options. Note that you do not
+   * own this storage.
+   */
+  cxxopts::ParseResult*  m_result;
 
-}; // end of class
+  // Original args for plugin for alternate command line processing.
+  std::vector< std::string >m_argv;
+
+}; // end class applet_context
 
 } } // end namespace
 
-#endif /* KWIVER_TOOL_DUMP_KLV_H */
+
+#endif /* KWIVER_TOOLS_APP_CONTEXT_H */

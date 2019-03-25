@@ -28,32 +28,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "kwiver_tools_export.h"
+#ifndef KWIVER_TOOL_DUMP_KLV_H
+#define KWIVER_TOOL_DUMP_KLV_H
 
-#include <vital/plugin_loader/plugin_loader.h>
-#include <tools/applet_registrar.h>
+#include <vital/applets/kwiver_applet.h>
 
-#include "config_explorer.h"
-#include "dump_klv.h"
+#include <string>
+#include <vector>
 
-// ============================================================================
-extern "C"
-KWIVER_TOOLS_EXPORT
-void
-register_factories( kwiver::vital::plugin_loader& vpm )
+namespace kwiver {
+namespace arrows {
+namespace core {
+
+class dump_klv
+  : public kwiver::tools::kwiver_applet
 {
-  using namespace kwiver::tools;
+public:
+  dump_klv();
 
-  kwiver::applet_registrar reg( vpm, "kwiver_tool_group" );
+  PLUGIN_INFO("dump-klv",
+              "Dump KLV stream from video.\n\n"
+              "This program displays the KLV metadata packets that are embedded in "
+              "a video stream.");
 
-  if (reg.is_module_loaded())
-  {
-    return;
-  }
+  virtual int run() override;
+  virtual void add_command_options() override;
 
-  // -- register applets --
-  reg.register_tool< config_explorer >();
-  reg.register_tool< dump_klv >();
+}; // end of class
 
-  reg.mark_module_as_loaded();
-}
+} } } // end namespace
+
+#endif /* KWIVER_TOOL_DUMP_KLV_H */

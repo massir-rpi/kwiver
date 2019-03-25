@@ -1951,7 +1951,7 @@ Options::help_one_group(const std::string& g) const
 
   for (const auto& o : group->second.options)
   {
-    if (o.is_container &&
+    if (//+ o.is_container &&
         m_positional_set.find(o.l) != m_positional_set.end() &&
         !m_show_positional)
     {
@@ -1971,7 +1971,7 @@ Options::help_one_group(const std::string& g) const
   auto fiter = format.begin();
   for (const auto& o : group->second.options)
   {
-    if (o.is_container &&
+    if (//+ o.is_container &&
         m_positional_set.find(o.l) != m_positional_set.end() &&
         !m_show_positional)
     {

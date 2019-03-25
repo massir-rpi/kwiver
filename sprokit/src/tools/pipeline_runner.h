@@ -31,7 +31,7 @@
 #ifndef KWIVER_TOOL_PIPELINE_RUNNER_H
 #define KWIVER_TOOL_PIPELINE_RUNNER_H
 
-#include <tools/kwiver_applet.h>
+#include <vital/applets/kwiver_applet.h>
 
 #include <string>
 #include <vector>

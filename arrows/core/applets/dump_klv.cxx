@@ -49,7 +49,8 @@
 #include <vital/plugin_loader/plugin_manager.h>
 
 namespace kwiver {
-namespace tools {
+namespace arrows {
+namespace core {
 
 namespace {
 
@@ -221,4 +222,4 @@ run()
   return EXIT_SUCCESS;
 }
 
-} } // end namespace
+} } } // end namespace

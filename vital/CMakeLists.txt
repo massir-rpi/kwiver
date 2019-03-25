@@ -298,6 +298,7 @@ add_subdirectory( logger )
 add_subdirectory( plugin_loader )
 
 if (KWIVER_ENABLE_TOOLS)
+  add_subdirectory( applets )
   add_subdirectory( tools )
 endif()
 

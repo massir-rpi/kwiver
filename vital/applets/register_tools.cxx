@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2018 by Kitware, Inc.
+ * Copyright 2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,46 +28,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef KWIVER_TOOLS_APP_CONTEXT_H
-#define KWIVER_TOOLS_APP_CONTEXT_H
+#include "vital_applets_export.h"
 
-#include <vital/util/wrap_text_block.h>
+#include <vital/plugin_loader/plugin_loader.h>
+#include <vital/applets/applet_registrar.h>
 
-#include <tools/cxxopts.hpp>
+#include "config_explorer.h"
 
-#include <memory>
-#include <ostream>
-
-namespace kwiver {
-namespace tools {
-
-// ----------------------------------------------------------------
-/**
- * @brief Applet context provided by the tool runner.
- *
- * This class contains data that are shared between the tool runner
- * and the applet.
- */
-class applet_context
+// ============================================================================
+extern "C"
+VITAL_APPLETS_EXPORT
+void
+register_factories( kwiver::vital::plugin_loader& vpm )
 {
-public:
+  using namespace kwiver::tools;
 
-  // Used to wrap large text blocks
-  kwiver::vital::wrap_text_block m_wtb;
+  kwiver::applet_registrar reg( vpm, "vital_tool_group" );
 
-  // name of the applet. as in kwiver <applet> <args..>
-  std::string m_applet_name;
+  if (reg.is_module_loaded())
+  {
+    return;
+  }
 
-    /**
-   * Results from parsing the command options. Note that you do not
-   * own this storage.
-   */
-  cxxopts::ParseResult*  m_result;
+  // -- register applets --
+  reg.register_tool< config_explorer >();
 
-
-}; // end class applet_context
-
-} } // end namespace
-
-
-#endif /* KWIVER_TOOLS_APP_CONTEXT_H */
+  reg.mark_module_as_loaded();
+}

@@ -5,10 +5,12 @@
 set( sources
   register_applets.cxx
 
+  dump_klv.cxx
   render_mesh.cxx
   )
 
 set( headers
+  dump_klv.h
   render_mesh.h
   )
 
@@ -31,4 +33,3 @@ kwiver_add_plugin( kwiver_algo_core_applets
                kwiver_tools_applet
                kwiversys
 )
-

@@ -69,7 +69,7 @@ add_command_options()
     ( "h,help", "Display applet usage" );
 
   m_cmd_options->add_options("pipe")
-    ( "c,config", "File containing supplemental configuration entries. Can occur multiple times.",
+    ( "c,config", "File name containing supplemental configuration entries. Can occur multiple times.",
       cxxopts::value<std::vector<std::string>>() )
     ( "s,setting", "Additional configuration entries in the form of VAR=VALUE",
       cxxopts::value<std::vector<std::string>>() )
@@ -79,11 +79,10 @@ add_command_options()
 
     // positional parameters
   m_cmd_options->add_options()
-    ( "p,pipe-file", "Input pipeline file file", cxxopts::value<std::string>())
-    ( "extra", "Extra command line args",  cxxopts::value<std::vector<std::string>>())
+    ( "p,pipe-file", "Input pipeline file", cxxopts::value<std::string>())
     ;
 
-    m_cmd_options->parse_positional({"pipe-file", "extra"});
+  m_cmd_options->parse_positional("pipe-file");
 }
 
 // ----------------------------------------------------------------------------
@@ -130,7 +129,7 @@ run()
   if ( cmd_args.count("config") > 0 )
   {
     std::vector< std::string > config_file_names = cmd_args["config"].as<std::vector<std::string>>();
-    for ( auto config : config_file_names )
+    for ( const auto& config : config_file_names )
     {
       builder.load_supplement( config );
     }
@@ -140,7 +139,7 @@ run()
   if ( cmd_args.count("setting") > 0 )
   {
     std::vector< std::string > config_settings = cmd_args["setting"].as<std::vector<std::string>>();
-    for ( auto setting : config_settings )
+    for ( const auto& setting : config_settings )
     {
       builder.add_setting( setting );
     }

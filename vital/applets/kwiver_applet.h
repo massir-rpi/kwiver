@@ -31,10 +31,10 @@
 #ifndef KWIVER_TOOLS_KWIVER_APPLET_H
 #define KWIVER_TOOLS_KWIVER_APPLET_H
 
-#include <tools/kwiver_tools_applet_export.h>
+#include <vital/applets/kwiver_tools_applet_export.h>
 #include <vital/plugin_loader/plugin_info.h>
 
-#include <tools/cxxopts.hpp>
+#include <vital/applets/cxxopts.hpp>
 
 #include <ostream>
 #include <memory>

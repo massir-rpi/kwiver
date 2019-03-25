@@ -135,6 +135,12 @@ if (KWIVER_ENABLE_PYTHON)
   endif()
 endif()
 
+# support for CentOS broken regex support
+if ( NOT STD_REGEX )
+  set( BOOST_REGEX boost_regex)
+  add_definitions( -DKWIVER_USE_BOOST_REGEX )
+endif()
+
 set(BUILD_SHARED_LIBS ${KWIVER_BUILD_SHARED})
 
 # ===========================================================================================
