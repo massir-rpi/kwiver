@@ -135,12 +135,6 @@ if (KWIVER_ENABLE_PYTHON)
   endif()
 endif()
 
-# support for CentOS broken regex support
-if ( NOT STD_REGEX )
-  set( BOOST_REGEX boost_regex)
-  add_definitions( -DKWIVER_USE_BOOST_REGEX )
-endif()
-
 set(BUILD_SHARED_LIBS ${KWIVER_BUILD_SHARED})
 
 # ===========================================================================================
@@ -187,6 +181,14 @@ else()
 endif()
 
 add_definitions(-DKWIVER_DEFAULT_PLUGIN_ORGANIZATION="Kitware Inc.")
+
+# support for CentOS broken regex support
+if ( NOT VITAL_USE_STD_REGEX )
+  message( "Using boost regex because the native support is insufficient" )
+
+  set( BOOST_REGEX boost_regex)  # set library name
+  add_definitions( -DKWIVER_USE_BOOST_REGEX )
+endif()
 
 # ===========================================================================================
 link_directories( ${KWIVER_BINARY_DIR}/lib )

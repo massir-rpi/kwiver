@@ -58,13 +58,21 @@ output_stream() const
 
 
 // ------------------------------------------------------------------
-kwiversys::CommandLineArguments*
+cxxopts::Options&
 explorer_context::
 command_line_args()
 {
-  return &p->m_args;
+  return *p->m_cmd_options;
 }
 
+
+// ------------------------------------------------------------------
+cxxopts::ParseResult&
+explorer_context::
+command_line_result()
+{
+  return *p->m_result;
+}
 
 // ------------------------------------------------------------------
 const std::string&

@@ -49,4 +49,5 @@ target_link_libraries( explorer_plugin
   PUBLIC   vital
   PRIVATE  kwiversys
            vital_util
+           ${BOOST_REGEX}
   )

@@ -119,7 +119,7 @@ left_trim( std::string& s )
 
 
 /**
- * @brief Removes whitespace from right size of string.
+ * @brief Removes whitespace from right side of string.
  *
  * @param[in,out] s String to be trimmed in place
  * @return Modified string

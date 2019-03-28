@@ -36,8 +36,7 @@
 #include <vital/vital_config.h>
 #include <vital/noncopyable.h>
 #include <vital/plugin_loader/plugin_factory.h>
-
-#include <kwiversys/CommandLineArguments.hxx>
+#include <vital/applets/cxxopts.hpp>
 
 namespace kwiver {
 namespace vital {
@@ -75,7 +74,16 @@ public:
    *
    * @return Pointer to command line args object.
    */
-  kwiversys::CommandLineArguments* command_line_args();
+  cxxopts::Options& command_line_args();
+
+  /**
+   * @brief Parsed version of the command line
+   *
+   *
+   * @return Reference to the parsed command line options.
+   */
+  cxxopts::ParseResult& command_line_result();
+
 
   /**
    * @brief Wrap long text to line length.
@@ -93,7 +101,7 @@ public:
    * @brief Return formatting type string.
    *
    * This method returns the formatting type string that was specified
-   * on the commane line.
+   * on the command line.
    *
    * @return Formatting type string.
    */

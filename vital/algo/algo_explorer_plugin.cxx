@@ -128,7 +128,8 @@ display_algo( std::shared_ptr< kwiver::vital::algorithm_factory > fact )
   }
 
   m_context->output_stream()  << "---------------------\n"
-                              << "Info on algorithm type \"" << type << "\" implementation \"" << impl << "\""
+                              << "Info on algorithm type \"" << type
+                              << "\" implementation \"" << impl << "\""
                               << std::endl;
 
   m_context->display_attr( fact );

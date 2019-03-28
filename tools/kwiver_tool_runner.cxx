@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
     }
 
     // The parse result has to be created locally due to class design.
-    // No default CTOR, copy CTOR or operation.
+    // No default CTOR, copy CTOR or copy operation.
     int local_argc = options.m_applet_args.size();
     char** local_argv = &argv_vect[0];
     cxxopts::ParseResult local_result = applet->m_cmd_options->parse( local_argc, local_argv );

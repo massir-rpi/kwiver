@@ -49,29 +49,6 @@ namespace vital {
 namespace {
 
 // ------------------------------------------------------------------
-// This is different from the utility string because sometimes we need
-// to join a set.
-template< class ContainerT >
-std::string
-join( const ContainerT& vec, const char* delim )
-{
-  std::stringstream res;
-  std::copy( vec.begin(), vec.end(), std::ostream_iterator< std::string > ( res, delim ) );
-
-  // remove trailing delim
-  std::string res_str = res.str();
-  if (res_str.size() > 1 )
-  {
-    res_str.erase(res_str.size() - 2 );
-  }
-
-  // trim trailing white space
-  res_str.erase( res_str.find_last_not_of( " \t\n\r\f\v" ) + 1 );
-
-  return res_str;
-}
-
-
 std::string underline( const std::string& txt, const char c = '=' )
 {
   std::string under = std::string( txt.size(), c );
@@ -118,8 +95,7 @@ public:
 // ==================================================================
 process_explorer::
 process_explorer()
-  :opt_hidden( false )
-  , m_logger( kwiver::vital::get_logger( "process_explorer_plugin" ) )
+  : m_logger( kwiver::vital::get_logger( "process_explorer_plugin" ) )
 { }
 
 
@@ -135,15 +111,6 @@ initialize( explorer_context* context )
 {
   m_context = context;
 
-  // Add plugin specific command line option.
-  auto cla = m_context->command_line_args();
-
-  // The problem here is that the address of these strings are copied
-  // into a control block. This is a problem since they are on the stack. ???
-  cla->AddArgument( "--hidden",
-                    kwiversys::CommandLineArguments::NO_ARGUMENT,
-                    &this->opt_hidden,
-                    "Display hidden properties and ports" );
   return true;
 }
 
@@ -153,6 +120,9 @@ void
 process_explorer::
 explore( const kwiver::vital::plugin_factory_handle_t fact )
 {
+  auto& result = m_context->command_line_result();
+  opt_hidden = result["hidden"].as<bool>();
+
   std::string proc_type = "-- Not Set --";
 
   fact->get_attribute( kwiver::vital::plugin_factory::PLUGIN_NAME, proc_type );
@@ -227,17 +197,13 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
   }
 
   // -- input ports --
-  out_stream() << "  -- Input ports --" << std::endl;
+  out_stream() << "    -- Input ports --" << std::endl;
 
   sprokit::process::ports_t const iports = proc->input_ports();
 
-  if ( iports.empty() )
   {
-    out_stream() << "    No input ports" << std::endl
-                 << std::endl;
-  }
-  else
-  {
+    bool iports_empty(true);
+
     for( sprokit::process::port_t const & port : iports )
     {
       if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
@@ -259,20 +225,24 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
                     << "    Flags      : " << flags_str << std::endl
                     << "    Description: " << port_desc << std::endl
                     << std::endl;
+
+      iports_empty = false;
     }   // end foreach
+
+    if ( iports_empty )
+    {
+      out_stream() << "    No input ports" << std::endl
+                   << std::endl;
+    }
   }
 
   // -- output ports --
-  out_stream() << "  -- Output ports --" << std::endl;
+  out_stream() << "    -- Output ports --" << std::endl;
   sprokit::process::ports_t const oports = proc->output_ports();
 
-  if ( oports.empty() )
   {
-    out_stream() << "    No output ports" << std::endl
-                 <<std::endl;
-  }
-  else
-  {
+    bool oports_empty(true);
+
     for( sprokit::process::port_t const & port : oports )
     {
       if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
@@ -293,8 +263,17 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
                     << "    Flags      : " << flags_str << std::endl
                     << "    Description: " << port_desc << std::endl
                     << std::endl;
+
+      oports_empty = false;
     }   // end foreach
+
+    if ( oports_empty )
+    {
+      out_stream() << "    No output ports" << std::endl
+                   <<std::endl;
+    }
   }
+
   out_stream()  << std::endl;
 
 } // process_explorer::explore
@@ -324,6 +303,7 @@ public:
   kwiver::vital::wrap_text_block m_wtb;
   kwiver::vital::wrap_text_block m_comment_wtb;
   std::string opt_output_dir;
+  bool opt_hidden;
   std::ofstream m_out_stream;
 
 }; // end class process_explorer_rst
@@ -332,6 +312,7 @@ public:
 // ==================================================================
 process_explorer_rst::
 process_explorer_rst()
+  :opt_hidden( false )
 {
   m_wtb.set_indent_string( "" );
   m_comment_wtb.set_indent_string( " # " );
@@ -378,12 +359,13 @@ initialize( explorer_context* context )
   m_context = context;
 
   // Add plugin specific command line option.
-  auto cla = m_context->command_line_args();
+  auto& cla = m_context->command_line_args();
 
-  cla->AddArgument( "--sep-proc-dir",
-                    kwiversys::CommandLineArguments::SPACE_ARGUMENT,
-                    &this->opt_output_dir,
-                    "Generate .rst output for processes as separate files in specified directory." );
+  cla.add_options("Process display")
+    ("sep-proc-dir", "Generate .rst output for processes as separate files in specified directory.",
+     cxxopts::value<std::string>() )
+    ( "hidden", "Display hidden properties and ports" )
+  ;
   return true;
 }
 
@@ -393,6 +375,10 @@ void
 process_explorer_rst::
 explore( const kwiver::vital::plugin_factory_handle_t fact )
 {
+  auto& result = m_context->command_line_result();
+  opt_output_dir = result["sep-proc-dir"].as<std::string>();
+  opt_hidden = result["hidden"].as<bool>();
+
   std::string proc_type = "-- Not Set --";
   if ( fact->get_attribute( kwiver::vital::plugin_factory::PLUGIN_NAME, proc_type )
        && ! opt_output_dir.empty() )
@@ -444,7 +430,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
 
     for( kwiver::vital::config_block_key_t const & key : keys )
     {
-      if ( key.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+      if (  ! opt_hidden && ( key.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
       {
         // skip hidden items
         continue;
@@ -486,7 +472,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
 
     for( sprokit::process::port_t const & port : iports )
     {
-      if ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+      if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
       {
         // skip hidden item
         continue;
@@ -528,7 +514,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
 
     for( sprokit::process::port_t const & port : oports )
     {
-      if ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+      if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
       {
         continue;
       }
@@ -568,7 +554,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
   // loop over config
   for( kwiver::vital::config_block_key_t const & key : keys )
   {
-    if ( key.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+    if ( ! opt_hidden && ( key.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
     {
       // skip hidden items
       continue;
@@ -609,7 +595,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
 
     for( sprokit::process::port_t const & port : iports )
     {
-      if ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+      if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
       {
         // skip hidden item
         continue;
@@ -638,7 +624,7 @@ explore( const kwiver::vital::plugin_factory_handle_t fact )
 
     for( sprokit::process::port_t const & port : oports )
     {
-      if ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix )
+      if ( ! opt_hidden && ( port.substr( 0, hidden_prefix.size() ) == hidden_prefix ) )
       {
         continue;
       }
@@ -710,15 +696,6 @@ initialize( explorer_context* context )
 {
   m_context = context;
 
-  // Add plugin specific command line option.
-  auto cla = m_context->command_line_args();
-
-  // The problem here is that the address of these strings are copied
-  // into a control block. This is a problem since they are on the stack. ???
-  cla->AddArgument( "--hidden",
-                    kwiversys::CommandLineArguments::NO_ARGUMENT,
-                    &this->opt_hidden,
-                    "Display hidden properties and ports" );
   return true;
 }
 
@@ -728,6 +705,9 @@ void
 process_explorer_pipe::
 explore( const kwiver::vital::plugin_factory_handle_t fact )
 {
+  auto& result = m_context->command_line_result();
+  opt_hidden = result["hidden"].as<bool>();
+
   std::string proc_type = "-- Not Set --";
 
   fact->get_attribute( kwiver::vital::plugin_factory::PLUGIN_NAME, proc_type );

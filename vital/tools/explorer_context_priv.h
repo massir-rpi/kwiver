@@ -32,6 +32,7 @@
 #define VITAL_TOOLS_EXPLORER_CONTEXT_PRIV_H
 
 #include <vital/util/wrap_text_block.h>
+#include <vital/applets/cxxopts.hpp>
 #include <functional>
 
 namespace kwiver {
@@ -42,7 +43,8 @@ class kwiver::vital::explorer_context::priv
 public:
 
   // Collected command line args
-  kwiversys::CommandLineArguments m_args;
+  std::unique_ptr< cxxopts::Options > m_cmd_options;
+  cxxopts::ParseResult* m_result;
 
   // Global options
   bool opt_detail;
