@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2014-2018 by Kitware, Inc.
+ * Copyright 2014-2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,15 +56,15 @@ public:
 };
 
 
-/// Exception for when a matrix is non-invertible
-class VITAL_EXCEPTIONS_EXPORT non_invertible_matrix
+/// Exception for when a transformation is non-invertible
+class VITAL_EXCEPTIONS_EXPORT non_invertible_transform
   : public math_exception
 {
 public:
   /// Constructor
-  non_invertible_matrix() noexcept;
+  non_invertible_transform() noexcept;
   /// Destructor
-  virtual ~non_invertible_matrix() noexcept;
+  virtual ~non_invertible_transform() noexcept;
 };
 
 

@@ -178,7 +178,7 @@ homography_< T >
   this->h_.computeInverseWithCheck( inv, isvalid );
   if ( ! isvalid )
   {
-    throw non_invertible_matrix();
+    throw non_invertible_transform();
   }
   return std::make_shared< homography_< T > >( inv );
 }

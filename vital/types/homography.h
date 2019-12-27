@@ -160,7 +160,8 @@ public:
 
   /// Get a new \p homography that has been inverted.
   /**
-   * \throws non_invertible_matrix When the homography matrix is non-invertible.
+   * \throws non_invertible_transform
+   *   When the homography matrix is non-invertible.
    * \return New homography transformation instance.
    */
   transform_2d_sptr inverse() const override;

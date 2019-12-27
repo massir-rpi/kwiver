@@ -76,8 +76,9 @@ public:
 
   /// Return an inverse of this transform object
   /**
-   * \return A new transform object that is the inverse of this transformation,
-   *         or a null pointer if the transformation is not invertible.
+   * \throws non_invertible_transform
+   *   When the transformation is non-invertible.
+   * \return A new transform object that is the inverse of this transformation.
    */
   virtual transform_2d_sptr inverse() const = 0;
 };
