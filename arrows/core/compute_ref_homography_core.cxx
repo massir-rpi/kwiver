@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2014-2018 by Kitware, Inc.
+ * Copyright 2014-2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -256,8 +256,9 @@ public:
       try
       {
         // Invertible test
-        Eigen::Matrix<double,3,3> h_mat = tmp_h->matrix(),
-                                  i_mat = tmp_h->inverse()->matrix();
+        auto const& h_mat = tmp_h->matrix();
+        auto const& i_mat =
+          std::static_pointer_cast< homography >( tmp_h->inverse() )->matrix();
         if( ! (h_mat.allFinite() && i_mat.allFinite()) )
         {
           LOG_WARN( m_logger,

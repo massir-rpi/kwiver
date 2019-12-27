@@ -100,7 +100,10 @@ f2f_homography
 f2f_homography
 ::inverse() const
 {
-  return f2f_homography( this->h_->inverse(), this->to_id_, this->from_id_ );
+  using kwiver::vital::homography;
+  auto const& inv =
+    std::static_pointer_cast< homography >( this->h_->inverse() );
+  return f2f_homography( inv, this->to_id_, this->from_id_ );
 }
 
 /// Custom f2f_homography multiplication operator for \p f2f_homography

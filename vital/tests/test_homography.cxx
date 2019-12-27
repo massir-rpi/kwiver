@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2015-2017 by Kitware, Inc.
+ * Copyright 2015-2017, 2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,8 +75,9 @@ TYPED_TEST(homography, inversion)
                                   -1.5,  1.5, -0.5,
                                    1.5,  0.5, -0.5;
 
-  homography_t h_inverse( *invertible.inverse() );
-  EXPECT_MATRIX_EQ( expected_result.matrix(), h_inverse.matrix() );
+  auto const& h_inverse_ptr =
+    std::static_pointer_cast< homography_t >( invertible.inverse() );
+  EXPECT_MATRIX_EQ( expected_result.matrix(), h_inverse_ptr->matrix() );
 
   noninvertable.get_matrix() << 1, 2, 3,
                                 4, 5, 6,
