@@ -119,7 +119,8 @@ vital_homography_inverse( vital_homography_t const *h,
   STANDARD_CATCH(
     "vital_homography_inverse", eh,
     auto h_inv_sptr = vital_c::HOMOGRAPHY_SPTR_CACHE.get( h )->inverse();
-    vital_c::HOMOGRAPHY_SPTR_CACHE.store( h_inv_sptr );
+    vital_c::HOMOGRAPHY_SPTR_CACHE.store(
+      std::static_pointer_cast< kwiver::vital::homography >( h_inv_sptr ) );
     return reinterpret_cast< vital_homography_t* >( h_inv_sptr.get() );
   );
   return 0;

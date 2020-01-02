@@ -162,13 +162,13 @@ homography_< T >
   {
     norm /= norm( 2, 2 );
   }
-  return homography_sptr( new homography_< T > ( norm ) );
+  return std::make_shared< homography_< T > >( norm );
 }
 
 
 /// Inverse the homography transformation returning a new transformation
 template < typename T >
-homography_sptr
+transform_2d_sptr
 homography_< T >
 ::inverse() const
 {
@@ -178,9 +178,9 @@ homography_< T >
   this->h_.computeInverseWithCheck( inv, isvalid );
   if ( ! isvalid )
   {
-    throw non_invertible_matrix();
+    throw non_invertible_transform();
   }
-  return homography_sptr( new homography_< T > ( inv ) );
+  return std::make_shared< homography_< T > >( inv );
 }
 
 

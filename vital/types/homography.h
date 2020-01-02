@@ -82,12 +82,6 @@ public:
    * \return New homography transformation instance.
    */
   virtual homography_sptr normalize() const = 0;
-
-  /// Get a new \p homography that has been inverted.
-  /**
-   * \return New homography transformation instance.
-   */
-  virtual homography_sptr inverse() const = 0;
 };
 
 
@@ -138,20 +132,20 @@ public:
   // ---- Abstract method definitions ----
 
   /// Access the type info of the underlying data
-  virtual std::type_info const& data_type() const { return typeid( T ); }
+  std::type_info const& data_type() const override { return typeid( T ); }
 
   /// Create a clone of ourself as a shared pointer
   /**
    * \return A new clone of this homography transformation.
    */
-  virtual transform_2d_sptr clone() const;
+  transform_2d_sptr clone() const override;
 
   /// Get a double-typed copy of the underlying matrix transformation
   /**
    * \return A copy of the transformation matrix represented in the double
    *         type.
    */
-  virtual Eigen::Matrix< double, 3, 3 > matrix() const;
+  Eigen::Matrix< double, 3, 3 > matrix() const override;
 
   /// Get a new \p homography that has been normalized
   /**
@@ -162,21 +156,22 @@ public:
    *
    * \return New homography transformation instance.
    */
-  virtual homography_sptr normalize() const;
+  homography_sptr normalize() const override;
 
   /// Get a new \p homography that has been inverted.
   /**
-   * \throws non_invertible_matrix When the homography matrix is non-invertible.
+   * \throws non_invertible_transform
+   *   When the homography matrix is non-invertible.
    * \return New homography transformation instance.
    */
-  virtual homography_sptr inverse() const;
+  transform_2d_sptr inverse() const override;
 
   /// Map a 2D double-type point using this homography
   /**
    * \param p Point to map against this homography
    * \return New point in the projected coordinate system.
    */
-  virtual vector_2d map( vector_2d const& p ) const;
+  vector_2d map( vector_2d const& p ) const override;
 
   // ---- Member Functions ----
 

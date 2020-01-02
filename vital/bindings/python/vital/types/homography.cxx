@@ -1,5 +1,5 @@
 /*ckwg +29
- * Copyright 2017 by Kitware, Inc.
+ * Copyright 2017, 2019 by Kitware, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,7 +102,7 @@ py::object
 PyHomographyD
 ::inverse()
 {
-  auto new_homog = this->homog.inverse();
+  auto new_homog = std::static_pointer_cast<kwiver::vital::homography>(this->homog.inverse());
   auto new_matrix = new_homog->matrix();
   return py::cast<Eigen::Matrix<double, 3, 3>>(new_matrix);
 }
@@ -138,7 +138,7 @@ py::object
 PyHomographyF
 ::inverse()
 {
-  auto new_homog = this->homog.inverse();
+  auto new_homog = std::static_pointer_cast<kwiver::vital::homography>(this->homog.inverse());
   auto new_matrix = new_homog->matrix();
   return py::cast<Eigen::Matrix<double, 3, 3>>(new_matrix);
 }
